@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  barechain-general:
+    image: barechain-general
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+      args:
+        - USER_ID
+        - GROUP_ID
+    container_name: barechain-general
+    restart: unless-stopped
+    volumes:
+      - ./:/srv/app

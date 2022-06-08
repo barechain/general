@@ -1,0 +1,31 @@
+{
+    "name": "barechain/general",
+    "type": "library",
+    "description": "General Laravel abstract classes",
+    "keywords": ["barechain", "general"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yaroslav Khatsko",
+            "email": "y.khatsko@codiv.net"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ext-json": "*",
+        "laravel/framework": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Barechain\\General\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "require-dev": {
+        "psy/psysh": "^0.11.2"
+    }
+}
