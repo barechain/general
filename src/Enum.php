@@ -26,8 +26,7 @@ abstract class Enum
     /**
      * Search value and return key if successful
      *
-     * @param $value
-     * @return string|null
+     * @param mixed $value
      */
     final public static function search($value): ?string
     {
