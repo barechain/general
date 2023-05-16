@@ -24,10 +24,8 @@ abstract class Dto implements Arrayable
 
     /**
      * Deny set dynamic properties
-     *
-     * @param mixed $value
      */
-    final public function __set(string $name, $value): void
+    final public function __set(string $name, mixed $value): void
     {
         throw new RuntimeException(sprintf('Forbidden to define dynamic property %s::$%s', static::class, $name));
     }

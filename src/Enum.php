@@ -25,11 +25,8 @@ abstract class Enum
 
     /**
      * Search value and return key if successful
-     *
-     * @param $value
-     * @return string|null
      */
-    final public static function search($value): ?string
+    final public static function search(mixed $value): ?string
     {
         return array_search($value, static::toArray(), true) ?: null;
     }

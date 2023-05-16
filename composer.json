@@ -11,19 +11,30 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "ext-json": "*",
-        "laravel/framework": ">=8.0"
+        "laravel/framework": ">=9.0",
+        "sentry/sentry-laravel": "^2.14.2"
     },
     "autoload": {
         "psr-4": {
             "Barechain\\General\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Barechain\\General\\ServiceProvider"
+            ]
+        }
+    },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
     },
     "require-dev": {
         "psy/psysh": "^0.11.2"
