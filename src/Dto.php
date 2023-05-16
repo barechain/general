@@ -106,8 +106,6 @@ abstract class Dto implements Arrayable
 
     /**
      * Get properties by Reflection API
-     *
-     * @return array
      */
     private function getReflectionProperties(): array
     {
