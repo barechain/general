@@ -6,42 +6,15 @@ namespace Barechain\General;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
-use ReflectionClass;
-use ReflectionProperty;
-use RuntimeException;
 
 abstract class Dto implements Arrayable
 {
-    protected static array $propertiesCache = [];
-
-    /**
-     * Dto constructor
-     */
-    public function __construct(array $data)
-    {
-        $this->setProperties($data);
-    }
-
-    /**
-     * Deny set dynamic properties
-     *
-     * @param mixed $value
-     */
-    final public function __set(string $name, $value): void
-    {
-        throw new RuntimeException(sprintf('Forbidden to define dynamic property %s::$%s', static::class, $name));
-    }
-
     /**
      * Get all items in the Dto
      */
     final public function all(): array
     {
-        foreach ($this->getProperties() as $property) {
-            $array[$property] = $this->{$property};
-        }
-
-        return $array ?? [];
+        return get_object_vars($this);
     }
 
     /**
@@ -64,61 +37,16 @@ abstract class Dto implements Arrayable
     }
 
     /**
-     * Set properties
+     * Make new Dto with named arguments
      */
-    private function setProperties(array $data): void
+    final public function with(...$values): self
     {
-        $defaultProperties = get_object_vars($this);
+        $data = [];
 
-        foreach ($this->getProperties() as $property) {
-            if (array_key_exists($property, $data)) {
-                $this->{$property} = $data[$property];
-                unset($data[$property]);
-
-                continue;
-            }
-
-            if (array_key_exists($property, $defaultProperties)) {
-                continue;
-            }
-
-            throw new RuntimeException(sprintf('Required property %s::$%s', static::class, $property));
+        foreach ($this->all() as $field => $oldValue) {
+            $data[$field] = array_key_exists($field, $values) ? $values[$field] : $oldValue;
         }
 
-        if (count($data)) {
-            throw new RuntimeException(sprintf(
-                'Unknown properties provided to %s: %s',
-                static::class,
-                json_encode(array_keys($data))
-            ));
-        }
-    }
-
-    /**
-     * Get properties
-     */
-    private function getProperties(): array
-    {
-        if (isset(static::$propertiesCache[static::class])) {
-            return static::$propertiesCache[static::class];
-        }
-
-        return static::$propertiesCache[static::class] = $this->getReflectionProperties();
-    }
-
-    /**
-     * Get properties by Reflection API
-     */
-    private function getReflectionProperties(): array
-    {
-        $reflection = new ReflectionClass($this);
-
-        foreach ($reflection->getProperties(ReflectionProperty::IS_PUBLIC) as $property) {
-            if (!$property->isStatic()) {
-                $keys[] = $property->name;
-            }
-        }
-
-        return $keys ?? [];
+        return new static(...$data);
     }
 }
